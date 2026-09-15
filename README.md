@@ -1,80 +1,430 @@
-# Dread Core
+# 🩸 DREAD CORE
 
-**Dread Core** is a Python/Flask-based, permission-driven browser security testing toolkit designed for authorized security assessments on Kali Linux and other Linux systems.
+### 🔐 Permission-Based Browser Security Testing Toolkit
 
-It provides a professional web interface for testing browser permission flows involving **camera, microphone, and location**, together with a local control console, optional Cloudflare Quick Tunnel support, session storage, evidence handling, and ZIP exports.
+**Dread Core** is a professional browser security testing toolkit built for **authorized security assessments, privacy testing, and browser permission testing**.
 
-> **Authorized testing only.** Dread Core is intended for systems, browsers, devices, and participants where you have permission to perform the test. Browser permissions are enforced normally; Dread Core does not bypass browser security controls.
+It provides a terminal-driven workflow with a Flask web interface for testing browser-controlled permissions such as:
+
+- 📷 Camera
+- 🎙️ Microphone
+- 📍 Location
+- 💻 Device information
+- 🌐 Network information
+- 📊 Session results
+- 📦 Result exporting
+- ☁️ Public HTTPS testing through Cloudflare Quick Tunnel
+
+Dread Core is designed for **authorized testing environments** such as labs, demonstrations, personal devices, security research, and penetration-testing engagements where the participant has consented.
 
 ---
 
-## Features
+## ✨ Features
 
-### Browser Permission Testing
+### 🖥️ Professional Terminal Interface
 
-- Camera permission testing
-- Microphone permission testing
-- Location permission testing
-- Professional participant portal
-- Native browser permission prompts
-- Permission-gated functionality
-- Permission-denied handling
-- Location accuracy information
-- Google Maps location links after permission is granted
+Dread Core uses a colorful interactive terminal menu instead of requiring users to remember multiple commands.
 
-### Admin Dashboard
-
-- Dashboard overview
-- Session information
-- Device/browser information
-- Location results
-- Camera evidence
-- Microphone evidence
-- Network information
-- Saved sessions
-- Reports
-- File management
-- JSON saving
-- ZIP export
-
-### Terminal Control Console
+Current menu:
 
 ```text
-[1]  Start Localhost Server
-[2]  Open Localhost
-[3]  Start Cloudflare Tunnel
-[4]  Stop Cloudflare Tunnel
-[5]  Server Status
-[6]  View Saved Results
-[7]  Export Results (ZIP)
-[8]  Share Permission Links
-[9]  Clear Screen / Redraw
-[10] Exit
+╔══════════════════════════════════════════════════════════╗
+║                       DREAD CORE                          ║
+╚══════════════════════════════════════════════════════════╝
+
+[1]  🚀 Start Localhost Server
+[2]  🌐 Open Localhost
+[3]  ☁️  Start Cloudflare Tunnel
+[4]  🛑 Stop Cloudflare Tunnel
+[5]  📊 Server Status
+[6]  📁 View Saved Results
+[7]  📦 Export Results (ZIP)
+[8]  🔗 Share Permission Links
+[9]  🔄 Clear Screen / Redraw
+[10] 🚪 Exit
 ```
 
-### Local Server
+---
 
-Default address:
+# 🌐 Browser Permission Testing
+
+Dread Core provides dedicated participant pages for browser permission testing.
+
+### 📷 Camera
+
+The participant can explicitly continue into a camera test.
+
+The browser displays its normal native camera permission prompt.
+
+If permission is granted:
+
+- Camera preview becomes available.
+- A test snapshot can be taken.
+- The snapshot can be saved to the authorized test session.
+
+If permission is denied:
+
+- The camera workspace remains locked.
+- No camera functionality is available.
+
+---
+
+### 🎙️ Microphone
+
+The microphone test uses the browser's native microphone permission system.
+
+After explicit participation:
 
 ```text
-http://127.0.0.1:8080
+CONTINUE
+     ↓
+Browser microphone permission
+     ↓
+Permission granted
+     ↓
+Audio test workspace
 ```
 
-### Cloudflare Quick Tunnel
+If permission is denied, the test remains locked.
 
-Dread Core can launch a temporary HTTPS Cloudflare Quick Tunnel pointing to the local server.
+---
+
+### 📍 Location
+
+The location test uses the browser's native Geolocation API.
+
+After the participant explicitly continues:
+
+- Browser location permission is requested.
+- Latitude is displayed after successful authorization.
+- Longitude is displayed.
+- Accuracy is displayed.
+- A Google Maps location link can be generated.
+- The result is saved to the authorized session.
+
+If permission is denied, the location functionality remains unavailable.
+
+---
+
+# 🔐 Consent & Security Model
+
+Dread Core is designed around **browser-controlled permissions**.
+
+It does **not** bypass browser permission systems.
+
+The participant must explicitly interact with the page and the browser decides whether camera, microphone, or location access is allowed.
+
+### Important
+
+Dread Core should only be used when you have authorization to perform the security test.
+
+Do not use it to:
+
+- ❌ Trick people into granting permissions
+- ❌ Bypass browser security
+- ❌ Collect information without authorization
+- ❌ Capture credentials
+- ❌ Perform covert surveillance
+- ❌ Impersonate legitimate services
+- ❌ Deploy against people without consent
+
+---
+
+# ☁️ Cloudflare Quick Tunnel
+
+Dread Core can expose the local Flask server through a temporary HTTPS URL using **Cloudflare Quick Tunnel**.
 
 Example:
 
 ```text
-https://example-name.trycloudflare.com
+https://example-random-name.trycloudflare.com
 ```
 
-Quick Tunnel URLs are temporary. If the tunnel process stops, the public URL stops working.
+This is useful when testing browser permissions because browsers can enforce different security requirements for camera, microphone, and geolocation access.
 
-### Runtime Storage
+### Start the tunnel
 
-Dread Core automatically creates its runtime directories when required:
+From the Dread Core menu:
+
+```text
+[3] Start Cloudflare Tunnel
+```
+
+Dread Core launches:
+
+```bash
+cloudflared tunnel --url http://localhost:8080
+```
+
+A temporary public URL is generated.
+
+### ⚠️ Important
+
+Cloudflare Quick Tunnel URLs are temporary.
+
+When the tunnel is stopped or restarted, the URL can change.
+
+Therefore, generate new permission links whenever a new tunnel URL is created.
+
+---
+
+# 🔗 Permission Sharing
+
+Dread Core generates tokenized permission-testing URLs.
+
+From the terminal:
+
+```text
+[8] Share Permission Links
+```
+
+The interface provides:
+
+```text
+🌐 Participant Portal
+📷 Camera Permission
+🎙️ Microphone Permission
+📍 Location Permission
+```
+
+Example structure:
+
+```text
+https://YOUR-TUNNEL.trycloudflare.com/test/TOKEN
+```
+
+Camera:
+
+```text
+https://YOUR-TUNNEL.trycloudflare.com/share/camera/TOKEN
+```
+
+Microphone:
+
+```text
+https://YOUR-TUNNEL.trycloudflare.com/share/microphone/TOKEN
+```
+
+Location:
+
+```text
+https://YOUR-TUNNEL.trycloudflare.com/share/location/TOKEN
+```
+
+The tokens are generated automatically when the server starts.
+
+---
+
+# 🧑‍💻 Participant Portal
+
+The participant portal provides a centralized interface for authorized browser testing.
+
+It contains separate modules for:
+
+```text
+📷 Camera Session
+🎙️ Audio Session
+📍 Location Session
+```
+
+Each module opens its own secure testing page.
+
+The participant UI is intentionally separated from the administrator dashboard.
+
+---
+
+# 🎨 Participant UI
+
+The participant-facing interface can be customized independently.
+
+Main participant templates:
+
+```text
+web/templates/
+├── participant_portal.html
+├── share.html
+├── share_camera.html
+├── share_microphone.html
+└── share_location.html
+```
+
+### 🎨 Camera UI
+
+Edit:
+
+```text
+web/templates/share_camera.html
+```
+
+You can customize:
+
+- Logo
+- Title
+- Colors
+- Buttons
+- Instructions
+- Cards
+- Animations
+- Camera workspace
+- Permission messaging
+
+---
+
+### 🎙️ Microphone UI
+
+Edit:
+
+```text
+web/templates/share_microphone.html
+```
+
+You can customize:
+
+- Branding
+- Colors
+- Text
+- Audio workspace
+- Buttons
+- Instructions
+- Animations
+
+---
+
+### 📍 Location UI
+
+Edit:
+
+```text
+web/templates/share_location.html
+```
+
+You can customize:
+
+- Branding
+- Colors
+- Location information
+- Permission instructions
+- Map button
+- Animations
+- Layout
+
+---
+
+# ⚠️ Important: Do Not Change Routes Accidentally
+
+The visual HTML can be changed without changing the generated URLs.
+
+For example, you can redesign:
+
+```text
+share_camera.html
+```
+
+without changing:
+
+```text
+/share/camera/<token>
+```
+
+The URL structure is controlled by:
+
+```text
+server/app.py
+```
+
+Therefore:
+
+### Safe to modify
+
+```text
+HTML
+CSS
+JavaScript
+Colors
+Fonts
+Animations
+Branding
+Text
+Layout
+```
+
+### Be careful modifying
+
+```text
+Flask routes
+Token validation
+Session endpoints
+Upload endpoints
+Authentication
+```
+
+Changing those can break the existing permission links.
+
+---
+
+# 🖥️ Administrator Dashboard
+
+The administrator interface is separate from the participant interface.
+
+The dashboard provides access to authorized test results and modules such as:
+
+```text
+📊 Dashboard
+📁 Sessions
+💻 Device
+📍 Location
+📷 Camera
+🎙️ Microphone
+🌐 Network
+📑 Reports
+⚙️ Settings
+```
+
+Changing the participant pages does **not** automatically change the administrator dashboard.
+
+---
+
+# 📁 Project Structure
+
+```text
+Dread-Core/
+│
+├── config.json
+├── LICENSE
+├── README.md
+├── main.py
+├── requirements.txt
+│
+├── server/
+│   ├── __init__.py
+│   └── app.py
+│
+└── web/
+    ├── static/
+    │   ├── css/
+    │   ├── js/
+    │   └── assets/
+    │
+    └── templates/
+        ├── login.html
+        ├── dashboard.html
+        ├── sessions.html
+        ├── device.html
+        ├── location.html
+        ├── camera.html
+        ├── microphone.html
+        ├── network.html
+        ├── reports.html
+        ├── settings.html
+        │
+        ├── participant_portal.html
+        ├── share.html
+        ├── share_camera.html
+        ├── share_microphone.html
+        └── share_location.html
+```
+
+Runtime data is automatically created when Dread Core runs:
 
 ```text
 data/
@@ -83,71 +433,78 @@ data/
 └── sessions/
 ```
 
-Generated ZIP exports are stored under:
-
-```text
-data/exports/
-```
+You do **not** need to manually create the `data` directory.
 
 ---
 
-# Requirements
+# 🐍 Requirements
 
-Recommended:
+Dread Core requires:
 
-- Kali Linux
-- Python 3
-- pip
-- Modern web browser
-
-Optional:
-
-- `cloudflared` for public HTTPS testing
-
-Recommended browsers:
-
-- Firefox
-- Chromium
-- Google Chrome
-- Microsoft Edge
-
-Camera, microphone, and location access depends on the browser's own permission and security policies.
+- 🐍 Python 3
+- 🌐 Flask
+- ☁️ Cloudflared (optional, for public HTTPS testing)
+- 💻 Linux/Kali Linux recommended
 
 ---
 
-# Installation
+# ⚙️ Installation
 
-## 1. Clone the Repository
+Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/Dread-Core.git
+git clone https://github.com/YOUR_USERNAME/Dread-Core.git
+```
+
+Enter the directory:
+
+```bash
 cd Dread-Core
 ```
 
-Replace `YOUR-USERNAME` with the GitHub account that owns the repository.
-
-## 2. Create a Virtual Environment
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-## 3. Install Dependencies
+Install Python dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 4. Start Dread Core
+For Kali Linux, you may prefer:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+---
+
+# ☁️ Install Cloudflared
+
+Cloudflare Tunnel is optional.
+
+If you want public HTTPS permission testing, install:
+
+```text
+cloudflared
+```
+
+Verify:
+
+```bash
+cloudflared --version
+```
+
+If Cloudflare is not installed, Dread Core can still be used locally.
+
+---
+
+# 🚀 Starting Dread Core
+
+Run:
 
 ```bash
 python3 main.py
 ```
 
----
-
-# Running Dread Core
+The Dread Core interface will appear.
 
 Start the local server:
 
@@ -155,13 +512,13 @@ Start the local server:
 [1] Start Localhost Server
 ```
 
-Open it:
+Then open it:
 
 ```text
 [2] Open Localhost
 ```
 
-The server runs at:
+The local application will normally be available at:
 
 ```text
 http://127.0.0.1:8080
@@ -169,386 +526,335 @@ http://127.0.0.1:8080
 
 ---
 
-# Public HTTPS Testing
+# 🌐 Public HTTPS Testing
 
-For authorized testing involving another device:
+For authorized remote browser testing:
+
+### 1. Start the server
 
 ```text
 [1] Start Localhost Server
+```
+
+### 2. Start Cloudflare
+
+```text
 [3] Start Cloudflare Tunnel
 ```
 
-Dread Core displays a temporary public URL:
-
-```text
-PUBLIC TUNNEL READY
-
-SHARE URL → https://xxxxx.trycloudflare.com
-```
-
-Keep Dread Core and the Cloudflare tunnel running while the URL is being used.
-
----
-
-# Permission Test Links
-
-Use:
+### 3. Share permission links
 
 ```text
 [8] Share Permission Links
 ```
 
-Dread Core generates the current permission-test URLs.
+Dread Core will display the generated URLs.
 
-Individual routes use tokenized URLs:
+Use the participant portal for a centralized testing experience.
+
+---
+
+# 📊 Server Status
+
+Use:
 
 ```text
-/share/camera/<token>
-/share/microphone/<token>
-/share/location/<token>
+[5] Server Status
 ```
 
-The tokens are generated by the application and should not be manually guessed or removed.
+to check the current server state.
 
-The participant portal is the preferred starting point for authorized testing.
+This helps verify whether:
 
----
-
-# Permission Workflow
-
-Dread Core intentionally uses the browser's normal permission system.
-
-## Camera
-
-The participant starts the camera test and the browser displays its native camera permission prompt.
-
-If permission is allowed, the camera test can continue.
-
-If permission is denied, camera functionality remains unavailable.
-
-## Microphone
-
-The microphone test uses the browser's native microphone permission system.
-
-If permission is denied, microphone functionality cannot continue.
-
-## Location
-
-The location test requests browser geolocation permission.
-
-When granted, Dread Core can display:
-
-- Latitude
-- Longitude
-- Reported accuracy
-- Google Maps link
-
-If permission is denied or unavailable, the location test remains unavailable.
+- Flask is running
+- Cloudflare is running
+- A public URL exists
 
 ---
 
-# Browser Security
+# 📁 Saved Results
 
-Dread Core does **not** bypass browser permission controls.
-
-Modern browsers may require:
-
-- HTTPS
-- A secure context
-- User interaction
-- Browser permission approval
-
-`localhost` is treated as a secure development context by modern browsers.
-
-For remote browser testing, use HTTPS such as a properly configured Cloudflare Tunnel.
-
----
-
-# Login
-
-The default development credentials in the included configuration are:
+Use:
 
 ```text
-Username: admin
-Password: admin
+[6] View Saved Results
 ```
 
-Before using Dread Core in a real testing environment, change the credentials in:
+to inspect stored authorized testing results.
+
+Results are stored inside:
 
 ```text
-config.json
+data/
 ```
-
-Never use default credentials for a publicly exposed deployment.
 
 ---
 
-# Configuration
+# 📦 Export Results
 
-Main configuration:
+Use:
+
+```text
+[7] Export Results (ZIP)
+```
+
+Dread Core packages available test results into a ZIP archive.
+
+Exports are stored in:
+
+```text
+data/exports/
+```
+
+---
+
+# 🧹 Runtime Data
+
+Dread Core automatically creates:
+
+```text
+data/captures/
+data/exports/
+data/sessions/
+```
+
+These directories contain runtime information generated during testing.
+
+For GitHub repositories, do not commit private test data.
+
+---
+
+# ⚙️ Configuration
+
+The main configuration file is:
 
 ```text
 config.json
 ```
 
-Typical settings:
-
-```json
-{
-  "app_name": "Dread Core",
-  "version": "1.0.9",
-  "host": "127.0.0.1",
-  "port": 8080,
-  "username": "admin",
-  "password": "admin",
-  "max_upload_mb": 25
-}
-```
-
-You can change:
+It can contain application settings such as:
 
 - Application name
 - Version
 - Host
 - Port
-- Admin username
-- Admin password
-- Upload size limit
+- Session settings
+- Feature configuration
 
-Restart Dread Core after configuration changes.
+Always review configuration before deploying the project in a testing environment.
 
 ---
 
-# Customizing the Participant UI
+# 🔑 Authentication
 
-Dread Core 1.0.9 separates the participant-facing permission pages from the authenticated admin dashboard.
+The administrator interface uses an authentication layer.
 
-The participant UI can therefore be redesigned without redesigning the admin panel.
+The participant permission pages are separate from the administrator dashboard.
 
-Main participant templates:
+This separation allows:
 
 ```text
-web/templates/share.html
-web/templates/share_camera.html
-web/templates/share_microphone.html
-web/templates/share_location.html
+Administrator
+      │
+      ▼
+Admin Dashboard
+      │
+      └── Test Results
+           
+Participant
+      │
+      ▼
+Permission Testing Page
+```
+
+---
+
+# 🎨 Branding
+
+Dread Core can be rebranded for authorized internal security assessments.
+
+Common customization locations include:
+
+```text
+web/templates/
+web/static/
+config.json
 ```
 
 You can customize:
 
-- Branding
-- Logo
-- Headings
-- Descriptions
-- Buttons
-- Animations
-- Typography
-- Backgrounds
-- Icons
-- Layout
-- Colors
-- Permission instructions
-- Success/error states
-
-Changing the participant HTML/CSS does not normally change the generated URLs or token system.
-
-The URL structure remains controlled by the Flask backend.
+- 🩸 Dread Core branding
+- 🎨 Colors
+- 🖼️ Logos
+- 🔤 Fonts
+- ✨ Animations
+- 📝 Text
+- 🔘 Buttons
+- 🧩 Cards
+- 📐 Layout
 
 ---
 
-# Camera UI Customization
+# 🧩 Adding New Testing Modules
 
-Edit:
+Dread Core uses a modular Flask structure.
+
+A new module generally consists of:
 
 ```text
-web/templates/share_camera.html
+Flask route
+     ↓
+HTML template
+     ↓
+JavaScript interaction
+     ↓
+Session/result endpoint
+     ↓
+Stored result
 ```
-
-You can change the visual design while keeping the existing permission logic.
-
-Possible customizations:
-
-- Hero section
-- Camera instructions
-- Start/stop buttons
-- Snapshot controls
-- Status messages
-- Branding
-- Loading animations
-
-Keep the required JavaScript functionality if you want the existing camera workflow to continue working.
-
----
-
-# Microphone UI Customization
-
-Edit:
-
-```text
-web/templates/share_microphone.html
-```
-
-Possible customizations:
-
-- Recording interface
-- Waveform-style visuals
-- Start/stop controls
-- Status cards
-- Branding
-- Instructions
-- Success/error screens
-
-The browser still controls microphone permission.
-
----
-
-# Location UI Customization
-
-Edit:
-
-```text
-web/templates/share_location.html
-```
-
-Possible customizations:
-
-- Location landing screen
-- Continue button
-- Loading animation
-- Location status
-- Accuracy display
-- Map result card
-- Google Maps button
-- Error/denied screen
-- Branding
-
-The browser geolocation API and backend endpoint should remain intact if you want the current functionality.
-
----
-
-# Changing Participant Branding
-
-The visible branding on participant pages can be changed without changing the admin dashboard.
 
 For example:
 
 ```text
-DREAD CORE
-Secure Access Portal
+web/templates/
+    new_module.html
 ```
 
-can be replaced with another authorized testing project name.
-
-The generated Cloudflare and token URLs are independent of the visual branding.
-
----
-
-# Admin Panel vs Participant UI
-
-There are two separate interfaces.
-
-### Participant Interface
-
-Used by:
+and a corresponding route in:
 
 ```text
-/share/...
-```
-
-### Admin Interface
-
-Used by:
-
-```text
-/login
-/dashboard
-```
-
-Changing participant templates does not automatically redesign the admin panel.
-
-Changing dashboard templates does not automatically redesign participant pages.
-
----
-
-# Project Structure
-
-```text
-Dread-Core/
-│
-├── config.json
-├── LICENSE
-├── main.py
-├── README.md
-├── requirements.txt
-│
-├── server/
-│   ├── app.py
-│   └── ...
-│
-└── web/
-    ├── static/
-    │   ├── css/
-    │   └── js/
-    │
-    └── templates/
-        ├── login.html
-        ├── dashboard.html
-        ├── share.html
-        ├── share_camera.html
-        ├── share_microphone.html
-        ├── share_location.html
-        └── ...
-```
-
-Runtime folders are generated automatically:
-
-```text
-data/
-├── captures/
-├── exports/
-└── sessions/
+server/app.py
 ```
 
 ---
 
-# GitHub Upload
+# 🛠️ Troubleshooting
 
-You do **not** need to upload generated runtime data.
+## ❌ Localhost Does Not Open
 
-Recommended repository contents:
+Check whether the server is running:
 
 ```text
-config.json
-LICENSE
-main.py
-README.md
-requirements.txt
-server/
-web/
+[5] Server Status
 ```
 
-Do not commit:
+You can also test:
+
+```bash
+curl -I http://127.0.0.1:8080
+```
+
+If Flask is not running, start:
+
+```text
+[1] Start Localhost Server
+```
+
+---
+
+## ❌ Cloudflare URL Does Not Open
+
+First verify localhost:
+
+```bash
+curl -I http://127.0.0.1:8080
+```
+
+Then verify Cloudflare:
+
+```bash
+ps aux | grep cloudflared
+```
+
+You can also run:
+
+```bash
+cloudflared tunnel diag
+```
+
+Make sure the Cloudflare process is still running.
+
+---
+
+## ❌ Permission Prompt Does Not Appear
+
+Check:
+
+- 🌐 You are using HTTPS where required.
+- 🔒 Browser permissions are not blocked.
+- 📷 Camera permissions are allowed for the site.
+- 🎙️ Microphone permissions are allowed for the site.
+- 📍 Location permissions are allowed for the site.
+- 🖥️ The operating system has not blocked the browser.
+
+For Cloudflare Quick Tunnel, the generated URL should use:
+
+```text
+https://
+```
+
+---
+
+## ❌ Old Cloudflare URL Stops Working
+
+This is expected with Quick Tunnels.
+
+Quick Tunnel URLs are temporary.
+
+Start the tunnel again:
+
+```text
+[3] Start Cloudflare Tunnel
+```
+
+Then generate new links:
+
+```text
+[8] Share Permission Links
+```
+
+---
+
+## ❌ `cloudflared` Command Not Found
+
+Install Cloudflare Tunnel and verify:
+
+```bash
+cloudflared --version
+```
+
+Then restart Dread Core.
+
+---
+
+# 🔄 Updating Dread Core
+
+When updating the project:
+
+1. Stop Dread Core.
+2. Replace the application files.
+3. Keep your private runtime data backed up if required.
+4. Start Dread Core again.
+5. Generate fresh permission links if the server/tunnel has restarted.
+
+---
+
+# 🧹 GitHub Cleanup
+
+Before pushing the project to GitHub, do **not** upload:
 
 ```text
 __pycache__/
-data/
-.venv/
 *.pyc
+.venv/
+venv/
+data/captures/*
+data/exports/*
+data/sessions/*
+*.log
 ```
 
-The application creates the runtime directories automatically when required.
-
----
-
-# Recommended .gitignore
-
-Create:
-
-```text
-.gitignore
-```
-
-with:
+Recommended `.gitignore`:
 
 ```gitignore
 __pycache__/
@@ -568,164 +874,122 @@ data/sessions/*
 .DS_Store
 ```
 
-This helps prevent captured test data and Python cache files from being committed.
-
 ---
 
-# Updating the Participant UI Without Breaking URLs
+# 📌 Recommended GitHub Repository Contents
 
-If you only want to redesign the participant experience:
-
-1. Keep the Flask route names unchanged.
-2. Keep token validation unchanged.
-3. Edit the corresponding `share_*.html` template.
-4. Keep required JavaScript functionality.
-5. Restart Dread Core.
-6. Generate a fresh permission-test link if the server/tunnel was restarted.
-
-You can make substantial visual changes without changing the URL structure.
-
----
-
-# Version History
-
-## 1.0.9
-
-- Refined participant permission pages
-- Unified professional participant experience
-- Camera permission flow
-- Microphone permission flow
-- Location permission flow
-- Permission-denied states
-- Improved participant-facing presentation
-- Preserved admin dashboard
-- Preserved tokenized permission routes
-- Preserved Cloudflare Quick Tunnel support
-- Automatic runtime data directories
-
-## 1.0.8
-
-- Added dedicated permission-link menu
-- Improved participant portal
-- Added direct camera/microphone/location permission links
-- Improved public testing workflow
-
-## 1.0.7
-
-- Added tokenized permission-test pages
-- Added camera permission testing
-- Added microphone permission testing
-- Added location permission testing
-- Added participant share portal
-- Added Google Maps location result
-- Added permission-based public testing workflow
-
----
-
-# Troubleshooting
-
-## Localhost Does Not Open
-
-Run:
-
-```bash
-curl -I http://127.0.0.1:8080
-```
-
-Make sure Dread Core reports:
+Your repository should contain:
 
 ```text
-LOCALHOST SERVER: ONLINE
+config.json
+LICENSE
+README.md
+main.py
+requirements.txt
+server/
+web/
+.gitignore
 ```
 
-## Cloudflare URL Does Not Open
-
-Check:
-
-1. Localhost is running.
-2. Cloudflared is running.
-3. The tunnel points to port `8080`.
-4. You are using the newest URL printed by Dread Core.
-5. The tunnel process has not been stopped.
-
-Manual test:
-
-```bash
-cloudflared tunnel --url http://127.0.0.1:8080
-```
-
-## Camera Permission Does Not Appear
-
-Check:
-
-- The browser is using a secure context.
-- The page is HTTPS or localhost.
-- Camera access is available.
-- Camera permission has not been permanently blocked.
-- The test is started through user interaction.
-
-## Microphone Permission Does Not Appear
-
-Check the browser's microphone permission settings and make sure a microphone is available.
-
-## Location Permission Does Not Appear
-
-Check:
-
-- Browser location permissions
-- Operating-system location settings
-- HTTPS/secure context
-- Browser geolocation support
+Do not upload private testing results.
 
 ---
 
-# Security and Ethics
+# 🧪 Version History
 
-Dread Core is designed for:
+## 🩸 1.0.9
 
-- Authorized security testing
-- Security education
-- Browser compatibility testing
-- Privacy testing
-- Controlled demonstrations
-- Development and research
-
-Do not use it to:
-
-- Access another person's camera without authorization
-- Record another person's microphone without authorization
-- Obtain another person's location without authorization
-- Bypass browser security
-- Bypass permission prompts
-- Collect information without authorization
-
-The browser's permission system remains the security boundary.
+- 🎨 Unified professional participant UI
+- 📷 Updated camera permission-testing page
+- 🎙️ Updated microphone permission-testing page
+- 📍 Updated location permission-testing page
+- 🔐 Explicit browser permission workflow
+- 🔒 Locked state when permission is denied
+- 🌐 Cloudflare HTTPS support
+- 🔗 Tokenized permission links
+- 🧑‍💻 Participant portal
+- 📊 Session result storage
+- 📦 ZIP result export
 
 ---
 
-# Privacy
+## 🩸 1.0.8
 
-Dread Core can process sensitive test data such as:
-
-- Camera captures
-- Microphone recordings
-- Location information
-- Browser/device information
-- Session information
-
-Treat generated data as sensitive.
-
-Before publishing a repository or sharing a report:
-
-1. Remove captured data.
-2. Remove exported reports containing personal information.
-3. Do not commit `data/`.
-4. Do not publish real participant information.
-5. Change default credentials.
+- 🔗 Permission link sharing
+- 🧑‍💻 Participant portal
+- 📷 Camera link
+- 🎙️ Microphone link
+- 📍 Location link
+- 🎨 Improved terminal workflow
 
 ---
 
-# License
+## 🩸 1.0.7
+
+- 🔐 Tokenized permission URLs
+- 📷 Camera testing
+- 🎙️ Microphone testing
+- 📍 Location testing
+- 🌐 Public testing workflow
+
+---
+
+## 🩸 1.0.6
+
+- 📍 Improved location accuracy
+- 🎯 High-accuracy geolocation
+- 🔄 Multiple location readings
+- 📊 Accuracy information
+- 🗺️ Google Maps integration
+
+---
+
+## 🩸 1.0.5
+
+- 🖥️ Improved terminal menu
+- ☁️ Cloudflare tunnel controls
+- 📊 Server status
+- 📁 Saved results
+- 📦 ZIP export
+- 🔄 Screen redraw
+
+---
+
+# 🔐 Responsible Use
+
+Dread Core is a security testing tool.
+
+Use it only against:
+
+- ✅ Your own devices
+- ✅ Your own browser
+- ✅ Authorized test environments
+- ✅ Security labs
+- ✅ Participants who have explicitly agreed to the test
+- ✅ Systems where you have documented authorization
+
+Do not use Dread Core for unauthorized surveillance, credential theft, deceptive phishing, or bypassing browser security controls.
+
+The browser's native permission system must remain the authority over camera, microphone, and location access.
+
+---
+
+# 🛡️ Privacy
+
+Dread Core is intended for controlled security testing.
+
+Before running a test:
+
+- Explain what is being tested.
+- Obtain appropriate authorization.
+- Avoid collecting unnecessary information.
+- Protect stored results.
+- Delete test data when it is no longer required.
+- Never publish private participant data.
+
+---
+
+# 📜 License
 
 See:
 
@@ -737,16 +1001,27 @@ for the license governing this project.
 
 ---
 
-# Disclaimer
+# ⚠️ Disclaimer
 
-Dread Core is provided for legitimate security testing, education, development, and authorized research.
+Dread Core is provided for **authorized security testing, research, education, and controlled laboratory environments**.
 
-The author is not responsible for misuse of the software.
+The developer is not responsible for misuse of this software.
 
-**Only test systems, browsers, devices, and participants for which you have explicit authorization.**
+You are responsible for ensuring that your use of Dread Core complies with applicable laws, policies, permissions, and organizational rules.
 
 ---
 
-## Dread Core
+# 🩸 DREAD CORE
 
-**Permission-driven browser security testing for authorized environments.**
+### Browser Security Testing • Permission Testing • Authorized Research
+
+```text
+██████╗ ██████╗ ███████╗ █████╗ ██████╗
+██╔══██╗██╔══██╗██╔════╝██╔══██╗██╔══██╗
+██║  ██║██████╔╝█████╗  ███████║██║  ██║
+██║  ██║██╔══██╗██╔══╝  ██╔══██║██║  ██║
+██████╔╝██║  ██║███████╗██║  ██║██████╔╝
+╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝
+```
+
+**Built for authorized browser security testing. 🔐🩸**
