@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dread Core — Security Test Portal</title>
+<link rel="stylesheet" href="{{url_for('static',filename='css/dread.css')}}">
+<style>
+body{background:radial-gradient(circle at 50% -10%,rgba(139,92,246,.20),transparent 45%),#07080d;color:#f7f7fb}
+.portal{max-width:980px;margin:0 auto;padding:42px 22px 70px}.brand{letter-spacing:.18em;color:#a78bfa;font-size:12px;font-weight:800}.hero2{margin-top:18px;padding:34px;border:1px solid rgba(167,139,250,.25);border-radius:26px;background:linear-gradient(145deg,rgba(20,18,31,.96),rgba(9,10,16,.94));box-shadow:0 24px 80px rgba(0,0,0,.35)}h1{font-size:clamp(34px,6vw,64px);line-height:1;margin:10px 0 16px} .sub{color:#b7b4c8;max-width:720px;font-size:16px;line-height:1.7}.notice{margin-top:22px;padding:14px 16px;border-radius:14px;background:rgba(139,92,246,.10);border:1px solid rgba(139,92,246,.25);color:#d8d2ee}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}.card{display:block;text-decoration:none;color:inherit;padding:24px;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);transition:.2s}.card:hover{transform:translateY(-3px);border-color:rgba(167,139,250,.55);background:rgba(139,92,246,.08)}.icon{font-size:28px}.card h2{font-size:19px;margin:14px 0 8px}.card p{color:#aaa6ba;line-height:1.55;font-size:14px}.footer{margin-top:24px;color:#777487;font-size:12px;text-align:center}@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="portal">
+<div class="brand">DREAD CORE / AUTHORIZED SECURITY TEST</div>
+<section class="hero2">
+<h1>Secure Browser<br>Session Portal</h1>
+<p class="sub">This portal is for an authorized browser security assessment. Select a session below to begin. Your browser will display its native permission prompt before protected device access is enabled.</p>
+<div class="notice">🔒 <b>Privacy notice:</b> participation is voluntary. Your browser controls the permission prompt, and access can be denied at any time.</div>
+</section>
+<section class="grid">
+<a class="card" href="{{links.camera}}"><div class="icon">◉</div><h2>Camera Session</h2><p>Open a professional camera test and choose whether to grant camera access.</p></a>
+<a class="card" href="{{links.microphone}}"><div class="icon">◌</div><h2>Audio Session</h2><p>Test microphone access with an explicit start/stop recording control.</p></a>
+<a class="card" href="{{links.location}}"><div class="icon">⌖</div><h2>Location Session</h2><p>Test browser geolocation and view the reported accuracy on a map.</p></a>
+</section>
+<div class="footer">Dread Core · Authorized testing only · No permission bypasses</div>
+</main>
+</body></html>

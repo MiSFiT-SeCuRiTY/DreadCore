@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{app_name}} — {% block title %}Control{% endblock %}</title>
+<link rel="stylesheet" href="{{url_for('static',filename='css/dread.css')}}">
+</head><body>
+<div class="shell">
+<aside id="side">
+ <div class="brand"><div class="logo">D</div><div><b>DREAD</b><small>CORE</small></div></div>
+ <nav>
+  <a href="/dashboard">⌂ <span>Dashboard</span></a><a href="/sessions">◉ <span>Sessions</span></a>
+  <label>MODULES</label><a href="/device">▣ <span>Device Intel</span></a><a href="/location">⌖ <span>Location</span></a>
+  <a href="/camera">◫ <span>Camera</span></a><a href="/microphone">◉ <span>Microphone</span></a><a href="/network">⌁ <span>Network</span></a>
+  <label>OUTPUT</label><a href="/reports">▤ <span>Reports</span></a><a href="/settings">⚙ <span>Settings</span></a>
+ </nav><div class="side-status"><i></i> LOCAL CORE ONLINE</div>
+</aside>
+<main>
+<header><button class="hamb" onclick="toggleSide()">☰</button><div><small>DREAD CORE / CONTROL</small><h2>{% block heading %}Dashboard{% endblock %}</h2></div><a href="/logout">LOGOUT</a></header>
+<section class="content">{% block content %}{% endblock %}</section>
+<footer>Dread Core v{{version}} · Permission-based browser security testing · Local evidence only</footer>
+</main></div>
+<script src="{{url_for('static',filename='js/dread.js')}}"></script>{% block scripts %}{% endblock %}
+</body></html>

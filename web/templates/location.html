@@ -1,0 +1,74 @@
+{% extends "base.html" %}{% block title %}Location{% endblock %}{% block heading %}Location Test{% endblock %}
+{% block content %}
+<div class="notice"><b>Permission required.</b> The browser must approve geolocation. Dread Core never bypasses this protection. For better accuracy, the browser may use GPS, Wi‑Fi and other device location sources.</div>
+<div class="center">
+  <div class="big-symbol">⌖</div>
+  <h1>Browser Geolocation</h1>
+  <p>Request a high-accuracy position and keep the best reading received during the scan.</p>
+  <div class="actions">
+    <button class="primary" onclick="locate()">REQUEST HIGH-ACCURACY LOCATION</button>
+    <button class="secondary" onclick="stopLocate()">STOP</button>
+  </div>
+  <div id="result"><div class="empty">No location requested yet.</div></div>
+</div>
+{% endblock %}
+{% block scripts %}<script>
+let watchId = null;
+let best = null;
+let startedAt = 0;
+let timer = null;
+
+function mapsUrl(lat, lon){
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lat + ',' + lon)}`;
+}
+function fmt(v, digits=6){ return Number.isFinite(v) ? Number(v).toFixed(digits) : 'Unavailable'; }
+function stopLocate(){
+  if (watchId !== null && navigator.geolocation) navigator.geolocation.clearWatch(watchId);
+  watchId = null;
+  if (timer) clearTimeout(timer);
+  timer = null;
+}
+function render(p, scanning=false){
+  const c=p.coords;
+  const accuracy = Number(c.accuracy);
+  const lat=Number(c.latitude), lon=Number(c.longitude);
+  const url=mapsUrl(lat,lon);
+  result.innerHTML = `
+    <div><span>Latitude</span><b>${fmt(lat)}</b></div>
+    <div><span>Longitude</span><b>${fmt(lon)}</b></div>
+    <div><span>Estimated accuracy</span><b>± ${Number.isFinite(accuracy)?Math.round(accuracy):'—'} m</b></div>
+    <div><span>Altitude</span><b>${Number.isFinite(c.altitude)?Math.round(c.altitude)+' m':'Unavailable'}</b></div>
+    <div><span>Speed</span><b>${Number.isFinite(c.speed)?c.speed.toFixed(2)+' m/s':'Unavailable'}</b></div>
+    <div><span>Status</span><b>${scanning?'Scanning for a better reading…':'Best reading selected'}</b></div>
+    <div class="actions"><a class="primary" target="_blank" rel="noopener noreferrer" href="${url}">OPEN IN GOOGLE MAPS</a></div>`;
+}
+async function save(p){
+  const c=p.coords;
+  const data={module:'location',latitude:c.latitude,longitude:c.longitude,accuracy_m:c.accuracy,altitude_m:c.altitude,heading:c.heading,speed_mps:c.speed,timestamp:new Date(p.timestamp).toISOString(),maps_url:mapsUrl(c.latitude,c.longitude)};
+  await fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+}
+function locate(){
+  stopLocate(); best=null; startedAt=Date.now();
+  if(!navigator.geolocation){result.innerHTML='<div class="empty">Geolocation is unavailable in this browser.</div>';return;}
+  result.innerHTML='<div class="empty">Requesting permission and scanning for the most accurate available reading…</div>';
+  watchId=navigator.geolocation.watchPosition(async p=>{
+    const acc=Number(p.coords.accuracy);
+    if(!best || (Number.isFinite(acc) && acc < Number(best.coords.accuracy))){
+      best=p; render(best,true);
+    }
+    // Give the browser up to 20 seconds to improve the estimate, then save the best reading.
+    if(Date.now()-startedAt >= 20000){
+      stopLocate();
+      if(best){render(best,false); await save(best); toast('Best location saved');}
+    }
+  },e=>{
+    stopLocate();
+    result.innerHTML='<div class="empty">Request denied or failed: '+e.message+'</div>';
+  },{enableHighAccuracy:true,timeout:20000,maximumAge:0});
+  timer=setTimeout(async()=>{
+    stopLocate();
+    if(best){render(best,false); await save(best); toast('Best location saved');}
+    else result.innerHTML='<div class="empty">No position was received. Check browser location permission and try again.</div>';
+  },21000);
+}
+</script>{% endblock %}

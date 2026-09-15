@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}Microphone{% endblock %}{% block heading %}Microphone Test{% endblock %}
+{% block content %}<div class="notice"><b>Permission required.</b> Recording begins only after START RECORDING. The audio is uploaded only after you press STOP & SAVE.</div><div class="media center"><div class="big-symbol">◉</div><h2>Microphone Recorder</h2><div id="status">Microphone idle.</div><div class="actions"><button class="primary" onclick="startRec()">START RECORDING</button><button class="secondary" onclick="stopRec()">STOP & SAVE</button></div><audio id="audio" controls></audio></div>{% endblock %}
+{% block scripts %}<script>
+let rec=null,chunks=[],micStream=null;
+async function startRec(){try{micStream=await navigator.mediaDevices.getUserMedia({audio:true});chunks=[];rec=new MediaRecorder(micStream);rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);rec.onstop=async()=>{let blob=new Blob(chunks,{type:rec.mimeType||'audio/webm'});audio.src=URL.createObjectURL(blob);let fd=new FormData();fd.append('file',blob,'microphone-recording.webm');let r=await fetch('/api/upload',{method:'POST',body:fd});status.textContent=r.ok?'Recording saved to local evidence store.':'Upload failed.';micStream.getTracks().forEach(t=>t.stop());if(r.ok)toast('Recording saved')};rec.start();status.textContent='Recording…'}catch(e){status.textContent='Microphone unavailable or denied: '+e.message}}
+function stopRec(){if(rec&&rec.state!=='inactive')rec.stop()}
+</script>{% endblock %}
