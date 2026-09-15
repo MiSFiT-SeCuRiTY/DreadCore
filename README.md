@@ -1,4 +1,5 @@
 # 🩸 DREAD CORE
+<img width="1344" height="768" alt="dread-core-logo png" src="https://github.com/user-attachments/assets/ad9e6bf5-e386-40a0-ad76-a80092f9a707" />
 
 ### 🔐 Permission-Based Browser Security Testing Toolkit
 
