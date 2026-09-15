@@ -453,13 +453,13 @@ Dread Core requires:
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Dread-Core.git
+https://github.com/MiSFiT-SeCuRiTY/DreadCore.git
 ```
 
 Enter the directory:
 
 ```bash
-cd Dread-Core
+cd DreadCore
 ```
 
 Install Python dependencies:
