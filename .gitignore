@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+data/sessions/*
+data/captures/*
+!data/sessions/.gitkeep
+!data/captures/.gitkeep
