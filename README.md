@@ -897,7 +897,7 @@ Do not upload private testing results.
 
 # 🧪 Version History
 
-## 🩸 1.0.9
+## 🩸 1.0.0
 
 - 🎨 Unified professional participant UI
 - 📷 Updated camera permission-testing page
@@ -910,48 +910,6 @@ Do not upload private testing results.
 - 🧑‍💻 Participant portal
 - 📊 Session result storage
 - 📦 ZIP result export
-
----
-
-## 🩸 1.0.8
-
-- 🔗 Permission link sharing
-- 🧑‍💻 Participant portal
-- 📷 Camera link
-- 🎙️ Microphone link
-- 📍 Location link
-- 🎨 Improved terminal workflow
-
----
-
-## 🩸 1.0.7
-
-- 🔐 Tokenized permission URLs
-- 📷 Camera testing
-- 🎙️ Microphone testing
-- 📍 Location testing
-- 🌐 Public testing workflow
-
----
-
-## 🩸 1.0.6
-
-- 📍 Improved location accuracy
-- 🎯 High-accuracy geolocation
-- 🔄 Multiple location readings
-- 📊 Accuracy information
-- 🗺️ Google Maps integration
-
----
-
-## 🩸 1.0.5
-
-- 🖥️ Improved terminal menu
-- ☁️ Cloudflare tunnel controls
-- 📊 Server status
-- 📁 Saved results
-- 📦 ZIP export
-- 🔄 Screen redraw
 
 ---
 
