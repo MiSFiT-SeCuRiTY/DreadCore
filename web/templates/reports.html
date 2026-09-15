@@ -1,5 +1,0 @@
-{% extends "base.html" %}{% block title %}Reports{% endblock %}{% block heading %}Reports & Evidence{% endblock %}
-{% block content %}<div class="intro"><div><small>LOCAL EVIDENCE STORE</small><h1>Reports</h1><p>Download individual files or package all evidence into one ZIP.</p></div><a class="primary" href="/download-all">DOWNLOAD ALL ZIP</a></div><div class="panel"><div class="panel-head"><b>CAPTURE FILES</b><button class="secondary" onclick="loadFiles()">REFRESH</button></div><div id="files"></div></div>{% endblock %}
-{% block scripts %}<script>
-async function loadFiles(){let d=await (await fetch('/api/files')).json();files.innerHTML=d.length?d.map(x=>`<div class="row"><div><b>▤ ${x.name}</b><small>${x.size} bytes · ${x.modified}</small></div><a class="secondary" href="/download/${encodeURIComponent(x.name)}">DOWNLOAD</a></div>`).join(''):'<div class="empty">No evidence files yet.</div>'}loadFiles()
-</script>{% endblock %}

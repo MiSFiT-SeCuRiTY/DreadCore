@@ -1,8 +1,0 @@
-{% extends "base.html" %}{% block title %}Camera{% endblock %}{% block heading %}Camera Test{% endblock %}
-{% block content %}<div class="notice"><b>Permission required.</b> Camera access starts only after you press START CAMERA. Snapshots are uploaded only when you press SAVE SNAPSHOT.</div><div class="media"><video id="video" autoplay playsinline muted></video><canvas id="canvas" hidden></canvas><div class="actions"><button class="primary" onclick="startCam()">START CAMERA</button><button class="secondary" onclick="snapshot()">SAVE SNAPSHOT</button><button class="secondary" onclick="stopCam()">STOP</button></div><div id="status">Camera idle.</div></div>{% endblock %}
-{% block scripts %}<script>
-let stream=null;
-async function startCam(){try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});video.srcObject=stream;status.textContent='Camera active — permission granted.'}catch(e){status.textContent='Camera unavailable or denied: '+e.message}}
-async function snapshot(){if(!stream){status.textContent='Start the camera first.';return}canvas.width=video.videoWidth;canvas.height=video.videoHeight;canvas.getContext('2d').drawImage(video,0,0);let blob=await new Promise(r=>canvas.toBlob(r,'image/jpeg',.92));let fd=new FormData();fd.append('file',blob,'camera-snapshot.jpg');let r=await fetch('/api/upload',{method:'POST',body:fd});status.textContent=r.ok?'Snapshot saved to local evidence store.':'Snapshot upload failed.';if(r.ok)toast('Snapshot saved')}
-function stopCam(){if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;status.textContent='Camera stopped.'}
-</script>{% endblock %}
