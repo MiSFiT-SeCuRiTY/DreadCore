@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}Device Intel{% endblock %}{% block heading %}Device Intelligence{% endblock %}
+{% block content %}<div class="intro"><div><small>BROWSER TELEMETRY</small><h1>Device Intel</h1><p>Information exposed by the browser to the authorized page.</p></div><button class="primary" onclick="collect()">COLLECT & SAVE</button></div><div class="device-head"><div id="deviceIcon" class="device-icon">▣</div><div><h2 id="deviceType">Browser Device</h2><span id="deviceHint">Detecting device class…</span></div></div><div id="data" class="cards"></div>{% endblock %}
+{% block scripts %}<script>
+function classify(u){u=u.toLowerCase();if(u.includes('iphone'))return['iPhone','IPHONE'];if(u.includes('ipad'))return['iPad','TABLET'];if(u.includes('android'))return[u.includes('mobile')?'Android Phone':'Android Tablet','ANDROID'];if(u.includes('mac'))return['macOS Device','MAC'];if(u.includes('windows'))return['Windows PC','WINDOWS'];if(u.includes('linux'))return['Linux Device','LINUX'];return['Browser Device','BROWSER']}
+async function collect(){let n=navigator,s=screen,c=classify(n.userAgent);deviceType.textContent=c[0];deviceHint.textContent='Detected from browser platform signals';deviceIcon.textContent=c[1]==='IPHONE'?'':c[1]==='ANDROID'?'▣':c[1]==='TABLET'?'▤':'▣';
+let d={module:'device',device_class:c[0],platform:n.platform,userAgent:n.userAgent,language:n.language,languages:n.languages?.join(', '),timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,screen_width:s.width,screen_height:s.height,pixel_ratio:devicePixelRatio,cores:n.hardwareConcurrency||null,device_memory_gb:n.deviceMemory||null,touch_points:n.maxTouchPoints,online:n.onLine,cookie_enabled:n.cookieEnabled,do_not_track:n.doNotTrack||null};
+data.innerHTML=Object.entries(d).filter(([k])=>k!=='module').map(([k,v])=>`<div class="card"><small>${k.replaceAll('_',' ')}</small><b>${v??'Unavailable'}</b></div>`).join('');
+let r=await fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});toast(r.ok?'Device session saved':'Save failed')}
+collect()
+</script>{% endblock %}

@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Sessions{% endblock %}{% block heading %}Sessions{% endblock %}
+{% block content %}<div class="intro"><div><small>SESSION ARCHIVE</small><h1>Authorized Test Sessions</h1><p>Every saved record is created by an explicit module action.</p></div><button class="secondary" onclick="load()">REFRESH</button></div><div class="panel"><div id="list"></div></div>{% endblock %}
+{% block scripts %}<script>
+async function load(){let d=await (await fetch('/api/sessions')).json();list.innerHTML=d.length?d.map(x=>`<div class="row"><div><b>${x.session_id||'session'}</b><small>${x.created_at||''}</small></div><span>${x.module||'test'} · ${x.platform||x.user_agent||'browser'}</span></div>`).join(''):'<div class="empty">No sessions yet.</div>'}load()
+</script>{% endblock %}
